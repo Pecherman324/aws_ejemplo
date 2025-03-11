@@ -21,8 +21,8 @@ jobs:
           # Crear carpeta en EC2 antes de copiar archivos
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 "mkdir -p /home/ubuntu/app/"
 
-          # Copiar los archivos del repositorio al servidor EC2
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r . ubuntu@18.217.118.156:/home/ubuntu/app/
+          # COPIAR SOLO ARCHIVOS NECESARIOS A EC2 (Ignorando private_key.pem)
+          rsync -avz --exclude="private_key.pem" -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@18.217.118.156:/home/ubuntu/app/
 
           # Ejecutar comandos dentro de la instancia EC2
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 << 'EOF'
