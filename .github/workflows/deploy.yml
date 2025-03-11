@@ -15,8 +15,8 @@ jobs:
 
       - name: Configurar conexión SSH y desplegar
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > keys_final.pem
-          chmod 600 private_key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > C:\Users\cesar\Downloads\keys_final.pem
+          chmod 600  C:\Users\cesar\Downloads\keys_final.pem
           ssh -o StrictHostKeyChecking=no -i "C:\Users\cesar\Downloads\keys_final.pem" ubuntu@18.217.118.156 << 'EOF'
             sudo rm -rf /var/www/html/*
             sudo cp -r * /var/www/html/
