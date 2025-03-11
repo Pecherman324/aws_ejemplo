@@ -18,11 +18,14 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
+          # Verificar qué archivos hay en el repositorio
+          ls -l
+
           # Crear carpeta en EC2 antes de copiar archivos
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 "mkdir -p /home/ubuntu/app/"
 
-          # Copiar TODOS los archivos de la aplicación, ignorando private_key.pem
-          rsync -avz --exclude="private_key.pem" -e "ssh -o StrictHostKeyChecking=no -i private_key.pem" . ubuntu@18.217.118.156:/home/ubuntu/app/
+          # Copiar archivos del repositorio a EC2
+          scp -i private_key.pem -r * ubuntu@18.217.118.156:/home/ubuntu/app/
 
           # Ejecutar comandos dentro de la instancia EC2
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 << 'EOF'
