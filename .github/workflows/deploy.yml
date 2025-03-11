@@ -18,8 +18,11 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
+          # Crear carpeta en EC2 antes de copiar archivos
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 "mkdir -p /home/ubuntu/app/"
+
           # Copiar los archivos del repositorio al servidor EC2
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r * ubuntu@18.217.118.156:/home/ubuntu/app/
+          scp -o StrictHostKeyChecking=no -i private_key.pem -r . ubuntu@18.217.118.156:/home/ubuntu/app/
 
           # Ejecutar comandos dentro de la instancia EC2
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@18.217.118.156 << 'EOF'
@@ -28,3 +31,4 @@ jobs:
             sudo systemctl restart nginx
             exit
           EOF
+
